@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Header: React.FC = () => {
   const { totalItemsCount } = useCart();
+  const { currentUser, isAuthenticated } = useAuth();
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
@@ -46,7 +48,7 @@ export const Header: React.FC = () => {
             </span>
           </nav>
 
-          <div className="flex items-center gap-5 text-[11px] tracking-[0.2em] uppercase">
+          <div className="flex items-center gap-4 sm:gap-5 text-[11px] tracking-[0.2em] uppercase">
             <span className="hidden sm:inline text-[#99999F] hover:text-[#F5F5F0] cursor-pointer transition-colors">
               UA / EN
             </span>
@@ -56,6 +58,24 @@ export const Header: React.FC = () => {
             >
               <Search className="w-4 h-4" />
             </button>
+
+            {/* Посилання на Профіль / Авторизацію */}
+            <Link
+              to={isAuthenticated ? "/profile" : "/auth"}
+              className={`transition-colors flex items-center gap-1.5 ${
+                isActive('/profile') || isActive('/auth')
+                  ? 'text-[#00FFFF]'
+                  : 'text-[#99999F] hover:text-[#F5F5F0]'
+              }`}
+              title="Особистий кабінет"
+            >
+              <User className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">
+                {isAuthenticated ? `[ ${currentUser.role} ]` : 'LOGIN'}
+              </span>
+            </Link>
+
+            {/* Кошик */}
             <Link
               to="/cart"
               className={`transition-colors flex items-center gap-1 ${
