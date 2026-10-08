@@ -48,9 +48,16 @@ export const Header: React.FC = () => {
 >
   The Lore
 </Link>
-            <span className="text-[#99999F] hover:text-[#F5F5F0] cursor-pointer transition-colors">
-              Shipping / FAQ
-            </span>
+            <Link
+  to="/faq"
+  className={`transition-colors uppercase ${
+    isActive('/faq')
+      ? 'text-[#00FFFF] font-bold'
+      : 'text-[#99999F] hover:text-[#FF00FF]'
+  }`}
+>
+  Shipping / FAQ
+</Link>
           </nav>
 
           <div className="flex items-center gap-5 text-[11px] tracking-[0.2em] uppercase">

@@ -6,6 +6,8 @@ import { HomePage } from './pages/HomePage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { LorePage } from './pages/LorePage';
+import { FaqPage } from './pages/FaqPage';
+
 
 export const App: React.FC = () => (
   <CartProvider>
@@ -18,6 +20,7 @@ export const App: React.FC = () => (
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/lore" element={<LorePage />} />
+            <Route path="/faq" element={<FaqPage />} />
           </Routes>
         </div>
         <Footer />
