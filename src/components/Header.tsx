@@ -59,21 +59,42 @@ export const Header: React.FC = () => {
               <Search className="w-4 h-4" />
             </button>
 
-            {/* Посилання на Профіль / Авторизацію */}
-            <Link
-              to={isAuthenticated ? "/profile" : "/auth"}
-              className={`transition-colors flex items-center gap-1.5 ${
-                isActive('/profile') || isActive('/auth')
-                  ? 'text-[#00FFFF]'
-                  : 'text-[#99999F] hover:text-[#F5F5F0]'
-              }`}
-              title="Особистий кабінет"
-            >
-              <User className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">
-                {isAuthenticated ? `[ ${currentUser.role} ]` : 'LOGIN'}
-              </span>
-            </Link>
+            {/* Посилання на Профіль / Авторизацію згідно ролі */}
+            {(() => {
+              const profileLink = !isAuthenticated
+                ? '/auth'
+                : currentUser.role === 'admin'
+                ? '/admin'
+                : currentUser.role === 'manager'
+                ? '/manager'
+                : '/profile';
+
+              const isProfileActive =
+                isActive('/profile') ||
+                isActive('/profile/user') ||
+                isActive('/manager') ||
+                isActive('/profile/manager') ||
+                isActive('/admin') ||
+                isActive('/profile/admin') ||
+                isActive('/auth');
+
+              return (
+                <Link
+                  to={profileLink}
+                  className={`transition-colors flex items-center gap-1.5 ${
+                    isProfileActive
+                      ? 'text-[#00FFFF]'
+                      : 'text-[#99999F] hover:text-[#F5F5F0]'
+                  }`}
+                  title="Особистий кабінет"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">
+                    {isAuthenticated ? `[ ${currentUser.role.toUpperCase()} ]` : 'LOGIN'}
+                  </span>
+                </Link>
+              );
+            })()}
 
             {/* Кошик */}
             <Link

@@ -8,7 +8,9 @@ import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage';
 import { AuthPage } from './pages/AuthPage';
-import { ProfilePage } from './pages/ProfilePage';
+import { UserProfilePage } from './pages/UserProfilePage';
+import { ManagerProfilePage } from './pages/ManagerProfilePage';
+import { AdminProfilePage } from './pages/AdminProfilePage';
 
 export const App: React.FC = () => {
   return (
@@ -24,9 +26,16 @@ export const App: React.FC = () => {
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/order-success" element={<OrderSuccessPage />} />
 
-                {/* Нові сторінки: авторизація та профіль */}
+                {/* Сторінка авторизації */}
                 <Route path="/auth" element={<AuthPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+
+                {/* Окремі сторінки профілів згідно ролі */}
+                <Route path="/profile" element={<UserProfilePage />} />
+                <Route path="/profile/user" element={<UserProfilePage />} />
+                <Route path="/manager" element={<ManagerProfilePage />} />
+                <Route path="/profile/manager" element={<ManagerProfilePage />} />
+                <Route path="/admin" element={<AdminProfilePage />} />
+                <Route path="/profile/admin" element={<AdminProfilePage />} />
 
                 {/* Дефолтний редирект */}
                 <Route path="/" element={<Navigate to="/cart" replace />} />

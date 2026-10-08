@@ -17,14 +17,23 @@ export const AuthPage: React.FC = () => {
     e.preventDefault();
     if (mode === 'register') {
       updateProfile({ name, email, phone, role: 'user' });
+      login('user');
+      navigate('/profile');
+    } else {
+      login('user');
+      navigate('/profile');
     }
-    login();
-    navigate('/profile');
   };
 
   const handleQuickDemoLogin = (role: UserRole) => {
     login(role);
-    navigate('/profile');
+    if (role === 'admin') {
+      navigate('/admin');
+    } else if (role === 'manager') {
+      navigate('/manager');
+    } else {
+      navigate('/profile');
+    }
   };
 
   return (

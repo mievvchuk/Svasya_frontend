@@ -12,12 +12,14 @@ export interface UserProfile {
   novaPoshta?: string;
 }
 
-export interface UserOrder {
+export interface MockOrder {
   id: number;
   date: string;
+  items: string;
   total: number;
-  status: 'new' | 'processing' | 'shipped' | 'delivered';
-  itemsSummary: string;
+  status: 'Нове' | 'В обробці' | 'В дорозі' | 'Доставлено';
+  customerName: string;
+  customerEmail: string;
 }
 
 interface AuthContextType {
@@ -29,6 +31,8 @@ interface AuthContextType {
   switchRole: (role: UserRole) => void;
   usersList: UserProfile[];
   toggleUserRole: (userId: number) => void;
+  orders: MockOrder[];
+  updateOrderStatus: (orderId: number, status: MockOrder['status']) => void;
 }
 
 const STORAGE_AUTH_KEY = 'svasya_auth_user';
@@ -57,7 +61,7 @@ const initialUsers: UserProfile[] = [
     name: 'Дарина Коваль',
     email: 'daryna.k@gmail.com',
     phone: '+380509876543',
-    role: 'user',
+    role: 'manager',
     city: 'Одеса',
     novaPoshta: 'Відділення №5',
   },
@@ -72,10 +76,50 @@ const initialUsers: UserProfile[] = [
   },
 ];
 
+const initialOrdersList: MockOrder[] = [
+  {
+    id: 15,
+    date: '08.10.2026',
+    items: 'White Hoodie (L) x1',
+    total: 2800,
+    status: 'В дорозі',
+    customerName: 'Михайло Шевченко',
+    customerEmail: 'mikhail@gmail.com',
+  },
+  {
+    id: 12,
+    date: '02.10.2026',
+    items: 'Alien T-shirt (M) x2, Olive Cap x1',
+    total: 3850,
+    status: 'Доставлено',
+    customerName: 'Михайло Шевченко',
+    customerEmail: 'mikhail@gmail.com',
+  },
+  {
+    id: 9,
+    date: '25.09.2026',
+    items: 'Tote Bag x1, Black Mug x1',
+    total: 1100,
+    status: 'Доставлено',
+    customerName: 'Дарина Коваль',
+    customerEmail: 'daryna.k@gmail.com',
+  },
+  {
+    id: 8,
+    date: '20.09.2026',
+    items: 'White Hoodie (XL) x1',
+    total: 2800,
+    status: 'Доставлено',
+    customerName: 'Іван Мельник',
+    customerEmail: 'ivan.melnyk@gmail.com',
+  },
+];
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [usersList, setUsersList] = useState<UserProfile[]>(initialUsers);
+  const [orders, setOrders] = useState<MockOrder[]>(initialOrdersList);
   const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_AUTH_KEY);
@@ -96,7 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [currentUser]);
 
-  const login = (role: UserRole = 'admin') => {
+  const login = (role: UserRole = 'user') => {
     const user = usersList.find((u) => u.role === role) || usersList[0];
     setCurrentUser(user);
     setIsAuthenticated(true);
@@ -117,7 +161,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const switchRole = (role: UserRole) => {
-    updateProfile({ role });
+    const matchingUser = usersList.find((u) => u.role === role);
+    if (matchingUser) {
+      setCurrentUser(matchingUser);
+    } else {
+      updateProfile({ role });
+    }
   };
 
   // Адмін змінює простого користувача на менеджера і навпаки
@@ -136,6 +185,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
+  // Менеджер оновлює статус замовлення
+  const updateOrderStatus = (orderId: number, status: MockOrder['status']) => {
+    setOrders((prev) =>
+      prev.map((ord) => (ord.id === orderId ? { ...ord, status } : ord))
+    );
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -147,6 +203,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         switchRole,
         usersList,
         toggleUserRole,
+        orders,
+        updateOrderStatus,
       }}
     >
       {children}
@@ -161,4 +219,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
 
