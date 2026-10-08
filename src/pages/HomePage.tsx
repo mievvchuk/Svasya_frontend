@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Plus, ArrowUpRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useLang } from '../i18n/useLang';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
 
 export const HomePage: React.FC = () => {
   const { addToCart } = useCart();
+  const { t } = useLang();
 
   const featured = MOCK_PRODUCTS[0];
   const v = featured.variants[0];
@@ -51,7 +53,7 @@ export const HomePage: React.FC = () => {
   return (
     <main className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12">
 
-      {/* ============ HERO ============ */}
+      {/* HERO */}
       <div className="crt-frame crt-scanlines p-6 sm:p-10 relative overflow-hidden">
         <div
           className="absolute inset-0 z-0 pointer-events-none opacity-40"
@@ -66,9 +68,9 @@ export const HomePage: React.FC = () => {
 
         <div className="relative z-20">
           <div className="text-center text-[10px] tracking-[0.35em] uppercase text-[#99999F] mb-8">
-            VOL. 001 <span className="text-[#FF00FF] mx-2">/</span>
-            UNAUTHORIZED TRANSMISSION <span className="text-[#FF00FF] mx-2">/</span>
-            EST. 2026
+            {t.homeVol} <span className="text-[#FF00FF] mx-2">/</span>
+            {t.homeTransmission} <span className="text-[#FF00FF] mx-2">/</span>
+            {t.homeEst}
           </div>
 
           <h1 className="text-center font-black font-sans tracking-tighter uppercase text-[14vw] sm:text-[10vw] lg:text-[120px] leading-none mb-10 select-none">
@@ -82,10 +84,10 @@ export const HomePage: React.FC = () => {
                 <span className="text-[#B7FFB0]">● 00:00:01</span>
               </div>
               <h2 className="font-black text-xl sm:text-2xl text-[#F5F5F0] uppercase leading-tight font-sans">
-                BAD SIGNAL.<br />GOOD MERCH.
+                {t.homeBadSignal}<br />{t.homeGoodMerch}
               </h2>
               <p className="text-[11px] text-[#99999F] leading-relaxed">
-                For the chronically online. Not approved by anyone. Especially your parents.
+                {t.homeRecTagline}
               </p>
               <div className="text-[10px] tracking-[0.3em] uppercase text-[#00FFFF] pt-2">
                 SP / HI-FI / STEREO
@@ -104,7 +106,7 @@ export const HomePage: React.FC = () => {
 
             <div className="lg:col-span-3 order-3 space-y-3 text-right">
               <div className="text-[10px] tracking-[0.3em] uppercase text-[#FF00FF]">
-                [ Featured File ]
+                {t.homeFeaturedFile}
               </div>
               <Link
                 to={`/products/${featured.id}`}
@@ -121,17 +123,17 @@ export const HomePage: React.FC = () => {
                 {v.price.toLocaleString('uk-UA')} UAH
               </div>
               <div className="flex items-center justify-end gap-2 text-[10px] tracking-[0.25em] uppercase text-[#B7FFB0]">
-                <span>●</span> IN STOCK / LIMITED RUN
+                <span>●</span> {t.homeInStock}
               </div>
             </div>
           </div>
 
           <div className="mt-10 flex flex-wrap justify-center items-center gap-3">
             <Link to="/products" className="btn-svasya">
-              Shop The Drop ↗
+              {t.homeShopDrop} ↗
             </Link>
             <button onClick={handleAddFeatured} className="btn-svasya-outline">
-              + Add Featured To Bag
+              {t.homeAddFeatured}
             </button>
           </div>
 
@@ -140,14 +142,14 @@ export const HomePage: React.FC = () => {
               to="/products"
               className="flex items-center gap-2 hover:text-[#FF00FF] transition-colors"
             >
-              <Play className="w-3 h-3" /> PLAY / TRACKING: QUESTIONABLE
+              <Play className="w-3 h-3" /> {t.homePlayTracking}
             </Link>
             <span>© CBACb 2026 / 001</span>
           </div>
         </div>
       </div>
 
-      {/* ============ ABOUT / THE LORE ============ */}
+      {/* ABOUT / THE LORE */}
       <section className="mt-12 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         <div className="lg:col-span-5 relative">
           <div className="absolute -top-2 -left-2 text-[#B7FFB0] text-xs z-10">⌜</div>
@@ -181,25 +183,23 @@ export const HomePage: React.FC = () => {
 
         <div className="lg:col-span-7 space-y-6">
           <div className="flex items-center gap-3 text-[10px] tracking-[0.35em] uppercase">
-            <span className="text-[#00FFFF]">ABOUT</span>
+            <span className="text-[#00FFFF]">{t.homeAbout}</span>
             <span className="text-[#99999F]">/</span>
-            <span className="text-[#FF00FF]">THE LORE</span>
+            <span className="text-[#FF00FF]">{t.homeTheLore}</span>
           </div>
 
           <h2 className="font-black font-sans tracking-tight uppercase text-[#F5F5F0] text-3xl sm:text-4xl lg:text-5xl leading-[1.05]">
-            DRESSED LIKE<br />A CORRUPTED FILE.
+            {t.homeLoreTitle1}<br />{t.homeLoreTitle2}
           </h2>
 
           <p className="text-[#99999F] text-sm sm:text-[15px] leading-relaxed max-w-2xl">
-            CBACb is an independent merch project from Ukraine. We turn late-night
-            internet debris into things you can wear outside. Bootleg energy.
-            Original artwork. Zero interest in being the next big fashion thing.
+            {t.homeLoreText}
           </p>
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] tracking-[0.3em] uppercase text-[#99999F] pt-2">
-            <span><span className="text-[#B7FFB0]">01</span> / ORIGINAL ART</span>
-            <span><span className="text-[#B7FFB0]">02</span> / HEAVY FABRICS</span>
-            <span><span className="text-[#B7FFB0]">03</span> / SMALL RUNS</span>
+            <span><span className="text-[#B7FFB0]">01</span> / {t.homeTags1}</span>
+            <span><span className="text-[#B7FFB0]">02</span> / {t.homeTags2}</span>
+            <span><span className="text-[#B7FFB0]">03</span> / {t.homeTags3}</span>
           </div>
 
           <div className="pt-2">
@@ -207,32 +207,32 @@ export const HomePage: React.FC = () => {
               to="/products"
               className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-[#FF00FF] hover:text-[#00FFFF] transition-colors"
             >
-              WELCOME TO THE WRONG SIDE OF THE INTERNET. <ArrowUpRight className="w-3.5 h-3.5" />
+              {t.homeWelcome} <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ============ TICKER ============ */}
+      {/* TICKER */}
       <div className="mt-6 border-y border-[#343438] bg-[#101214] overflow-hidden py-3">
         <div className="marquee-track text-[11px] tracking-[0.3em] uppercase text-[#B7FFB0]">
-          {tickerPhrases.concat(tickerPhrases).map((t, i) => (
+          {tickerPhrases.concat(tickerPhrases).map((txt, i) => (
             <span key={i} className="px-6 inline-flex items-center gap-6">
-              {t}
+              {txt}
               <span className="text-[#FF00FF]">✕</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ============ NEXT TRANSMISSION ============ */}
+      {/* NEXT TRANSMISSION */}
       <section className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 border border-[#343438] bg-[#141416] p-6 sm:p-10 relative">
           <div className="absolute top-2 left-3 text-[#B7FFB0] text-xs">⌜</div>
           <div className="absolute bottom-2 right-3 text-[#B7FFB0] text-xs">⌟</div>
 
           <div className="text-[10px] tracking-[0.35em] uppercase text-[#99999F] mb-4">
-            // NEXT TRANSMISSION
+            {t.homeNextTransmission}
           </div>
           <h2 className="font-black text-3xl sm:text-5xl text-[#F5F5F0] uppercase font-sans tracking-tight mb-4">
             DROP_002<br />
@@ -240,8 +240,7 @@ export const HomePage: React.FC = () => {
             <span className="text-[#FF00FF] animate-pulse">_</span>
           </h2>
           <p className="text-[#99999F] text-xs sm:text-sm leading-relaxed max-w-xl">
-            Ми не анонсуємо дати. Ми просто з'являємось. Хочеш бути першим —
-            підписуйся на канал і тримай сповіщення увімкненими.
+            {t.homeDropDesc}
           </p>
 
           <div className="mt-6 grid grid-cols-3 gap-3 max-w-md">
@@ -262,7 +261,7 @@ export const HomePage: React.FC = () => {
               to="/products"
               className="inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-[#FF00FF] hover:text-[#00FFFF] transition-colors"
             >
-              GET NOTIFIED WHEN IT DROPS <ArrowUpRight className="w-3 h-3" />
+              {t.homeGetNotified} <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
         </div>
@@ -273,46 +272,46 @@ export const HomePage: React.FC = () => {
 
           <div>
             <div className="text-[10px] tracking-[0.35em] uppercase text-[#FF00FF] mb-4">
-              // SIGNAL LOG
+              {t.homeSignalLog}
             </div>
             <ul className="space-y-3 text-[11px] text-[#99999F] leading-relaxed">
               <li className="flex gap-3">
                 <span className="text-[#B7FFB0]">01</span>
-                <span>Нова партія оверсайз худі вже на складі.</span>
+                <span>{t.homeSignalLog1}</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-[#B7FFB0]">02</span>
-                <span>Рестоку старих позицій не буде.</span>
+                <span>{t.homeSignalLog2}</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-[#B7FFB0]">03</span>
-                <span>Міжнародка запускається наступного місяця.</span>
+                <span>{t.homeSignalLog3}</span>
               </li>
             </ul>
           </div>
 
           <div className="mt-6 text-[10px] tracking-[0.3em] uppercase text-[#00FFFF]">
-            STATUS: TRANSMITTING...
+            {t.homeTransmitting}
           </div>
         </div>
       </section>
 
-      {/* ============ FEATURED GRID ============ */}
+      {/* FEATURED GRID */}
       <section className="mt-16">
         <div className="flex items-end justify-between mb-6">
           <div>
             <div className="text-[10px] tracking-[0.35em] uppercase text-[#99999F] mb-2">
-              // IN THE AIR
+              {t.homeInTheAir}
             </div>
             <h2 className="font-black text-2xl sm:text-4xl text-[#F5F5F0] uppercase font-sans tracking-tight">
-              ЩЕ В <span className="text-[#FF00FF]">ЕФІРІ</span>
+              {t.homeStillOnAir}
             </h2>
           </div>
           <Link
             to="/products"
             className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-[#99999F] hover:text-[#FF00FF] transition-colors"
           >
-            SCROLL FOR MORE <ArrowUpRight className="w-3 h-3" />
+            {t.homeScrollMore} <ArrowUpRight className="w-3 h-3" />
           </Link>
         </div>
 
@@ -343,7 +342,7 @@ export const HomePage: React.FC = () => {
                     #{String(product.id).padStart(3, '0')} / {pv.size}
                   </div>
                   <div className="text-[9px] tracking-[0.3em] uppercase text-[#FF00FF]">
-                    NEW
+                    {t.homeNew}
                   </div>
                 </div>
 
@@ -361,10 +360,10 @@ export const HomePage: React.FC = () => {
                   <button
                     onClick={() => handleQuickAdd(product)}
                     className="btn-svasya-outline !text-[9px] !py-1.5 !px-2.5"
-                    title="Додати в кошик"
+                    title="Add to bag"
                   >
                     <Plus className="w-3 h-3 mr-1" />
-                    BAG
+                    {t.homeBagShort}
                   </button>
                 </div>
               </div>
@@ -374,12 +373,12 @@ export const HomePage: React.FC = () => {
 
         <div className="mt-6 sm:hidden">
           <Link to="/products" className="btn-svasya-outline w-full justify-center">
-            ВЕСЬ КАТАЛОГ ↗
+            {t.homeWholeCatalog} ↗
           </Link>
         </div>
       </section>
 
-      {/* ============ MANIFEST ============ */}
+      {/* MANIFEST */}
       <section className="mt-16 border border-[#343438] bg-[#101214] relative overflow-hidden">
         <div className="absolute top-2 left-3 text-[#FF00FF] text-xs">⌜</div>
         <div className="absolute bottom-2 right-3 text-[#FF00FF] text-xs">⌟</div>
@@ -390,11 +389,10 @@ export const HomePage: React.FC = () => {
               // 01
             </div>
             <div className="font-black text-[#F5F5F0] text-lg uppercase mb-2 font-sans">
-              NO RESTOCKS
+              {t.homeManifest1Title}
             </div>
             <p className="text-[#99999F] text-xs leading-relaxed">
-              Дроп виходить один раз. Не сподобалось — чекай наступний сезон.
-              Ми не тримаємо склад заради твого спокою.
+              {t.homeManifest1Text}
             </p>
           </div>
           <div>
@@ -402,11 +400,10 @@ export const HomePage: React.FC = () => {
               // 02
             </div>
             <div className="font-black text-[#F5F5F0] text-lg uppercase mb-2 font-sans">
-              MADE IN UKRAINE
+              {t.homeManifest2Title}
             </div>
             <p className="text-[#99999F] text-xs leading-relaxed">
-              Все пошите локально. Ніяких "made in PRC" з красивою етикеткою.
-              Тримаємо планку з 2026.
+              {t.homeManifest2Text}
             </p>
           </div>
           <div>
@@ -414,18 +411,17 @@ export const HomePage: React.FC = () => {
               // 03
             </div>
             <div className="font-black text-[#F5F5F0] text-lg uppercase mb-2 font-sans">
-              SHIP WORLDWIDE
+              {t.homeManifest3Title}
             </div>
             <p className="text-[#99999F] text-xs leading-relaxed">
-              Нова Пошта по Україні за 1–3 дні. Міжнародка — за домовленістю.
-              Пиши в підтримку, ми не кусаємось.
+              {t.homeManifest3Text}
             </p>
           </div>
         </div>
 
         <div className="px-8 sm:px-12 pb-8 sm:pb-12">
           <Link to="/products" className="btn-svasya">
-            Shop The Drop ↗
+            {t.homeShopDrop} ↗
           </Link>
         </div>
       </section>

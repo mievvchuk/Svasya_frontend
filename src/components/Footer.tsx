@@ -1,22 +1,25 @@
 import React from 'react';
+import { useLang } from '../i18n/useLang';
 
 export const Footer: React.FC = () => {
+  const { t } = useLang();
+
   const ticker = [
-    'NO TRENDS. JUST LORE.',
-    'WEAR THE BRAINROT.',
-    '100% HUMAN. ALLEGEDLY.',
-    'NO TRENDS. JUST LORE.',
-    'WEAR THE BRAINROT.',
-    '100% HUMAN. ALLEGEDLY.',
+    t.footerTicker1,
+    t.footerTicker2,
+    t.footerTicker3,
+    t.footerTicker1,
+    t.footerTicker2,
+    t.footerTicker3,
   ];
 
   return (
     <footer className="mt-auto bg-[#080808] border-t border-[#343438]">
       <div className="overflow-hidden py-4 border-b border-[#343438]">
         <div className="marquee-track text-[11px] tracking-[0.3em] uppercase text-[#99999F]">
-          {ticker.concat(ticker).map((t, i) => (
+          {ticker.concat(ticker).map((txt, i) => (
             <span key={i} className="px-6 inline-flex items-center gap-6">
-              {t}
+              {txt}
               <span className="text-[#FF00FF]">✕</span>
             </span>
           ))}
@@ -26,11 +29,11 @@ export const Footer: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] tracking-[0.25em] uppercase text-[#99999F]">
         <div className="flex items-center gap-3">
           <span className="font-black text-sm text-[#F5F5F0] font-sans">CBACb®</span>
-          <span>// Independent. Ukrainian. Unhinged.</span>
+          <span>{t.footerTagline}</span>
         </div>
         <div className="flex items-center gap-6">
-          <span>© 2026 CBACb. All Rights Reserved.</span>
-          <span className="text-[#00FFFF]">[ EJECT ⏏ ]</span>
+          <span>© 2026 CBACb. {t.footerRights}</span>
+          <span className="text-[#00FFFF]">{t.footerEject}</span>
         </div>
       </div>
     </footer>
