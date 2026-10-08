@@ -100,3 +100,15 @@
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
 }
+
+/* Marquee infinite scroll for ticker */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
