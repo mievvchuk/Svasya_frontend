@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
 
 export const App: React.FC = () => {
@@ -8,11 +10,13 @@ export const App: React.FC = () => {
     <CartProvider>
       <BrowserRouter>
         <div className="min-h-screen flex flex-col bg-[#080808] text-[#F5F5F0] selection:bg-[#FF00FF] selection:text-[#080808]">
+          <Header />
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
             </Routes>
           </div>
+          <Footer />
         </div>
       </BrowserRouter>
     </CartProvider>
