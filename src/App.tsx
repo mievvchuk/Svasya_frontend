@@ -16,6 +16,20 @@ import { OrderDetailsPage } from './pages/OrderDetailsPage';
 export const App: React.FC = () => {
   return (
     <AuthProvider>
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { LanguageProvider } from './i18n/useLang';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { HomePage } from './pages/HomePage';
+import { ProductsPage } from './pages/ProductsPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { LorePage } from './pages/LorePage';
+import { FaqPage } from './pages/FaqPage';
+
+export const App: React.FC = () => {
+  return (
+    <LanguageProvider>
       <CartProvider>
         <BrowserRouter>
           <div className="min-h-screen flex flex-col bg-[#080808] text-[#F5F5F0] selection:bg-[#FF00FF] selection:text-[#080808]">
@@ -45,6 +59,11 @@ export const App: React.FC = () => {
                 {/* Дефолтний редирект */}
                 <Route path="/" element={<Navigate to="/cart" replace />} />
                 <Route path="*" element={<Navigate to="/cart" replace />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/products/:id" element={<ProductDetailPage />} />
+                <Route path="/lore" element={<LorePage />} />
+                <Route path="/faq" element={<FaqPage />} />
               </Routes>
             </div>
             <Footer />
@@ -52,6 +71,11 @@ export const App: React.FC = () => {
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
+  );
+};
+
+export default App;
+    </LanguageProvider>
   );
 };
 

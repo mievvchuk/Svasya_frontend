@@ -28,7 +28,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (e) {
       console.error('Не вдалося завантажити кошик з localStorage:', e);
     }
-    // Початкові тестові дані для зручності перевірки на старті, якщо порожньо
     return [
       {
         variantId: 5,
@@ -37,20 +36,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         price: 999,
         color: 'forest_green',
         size: 'L',
-        imageUrl: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80',
+        imageUrl: '/images/cap.jpg',
         quantity: 1,
       },
     ];
   });
 
-  // Зберігаємо зміни у localStorage
   useEffect(() => {
     try {
-      if (items.length === 0) {
-        localStorage.removeItem(STORAGE_KEY);
-      } else {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch (e) {
       console.error('Не вдалося зберегти кошик у localStorage:', e);
     }
@@ -63,7 +57,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
 
       if (existingIndex > -1) {
-        // Якщо товар з цим variantId вже є, збільшуємо quantity
         const updated = [...prevItems];
         updated[existingIndex] = {
           ...updated[existingIndex],
@@ -72,14 +65,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return updated;
       }
 
-      // Інакше додаємо новий елемент
       return [...prevItems, newItem];
     });
   };
 
   const updateQuantity = (variantId: number, quantity: number) => {
     if (quantity < 1) {
-      return; // Заборонено встановлювати quantity < 1
+      return;
     }
 
     setItems((prevItems) =>
@@ -133,4 +125,3 @@ export const useCart = (): CartContextType => {
   }
   return context;
 };
-

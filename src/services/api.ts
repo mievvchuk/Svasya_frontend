@@ -36,6 +36,11 @@ export async function createOrder(
       console.log('📤 Тіло запиту, сформоване фронтендом (POST /api/orders):', payload);
       await new Promise((resolve) => setTimeout(resolve, 600)); // Емуляція затримки мережі
       
+    if (useSimulationIfOffline) {
+      console.log('--- [DEMO MODE: Без бекенду] ---');
+      console.log('📤 Тіло запиту, сформоване фронтендом (POST /api/orders):', payload);
+      await new Promise((resolve) => setTimeout(resolve, 600)); 
+
       const mockOrder: OrderResponse = {
         id: Math.floor(10 + Math.random() * 90),
         status: 'new',
@@ -54,3 +59,4 @@ export async function createOrder(
   }
 }
 
+}
