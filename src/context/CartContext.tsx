@@ -46,7 +46,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Зберігаємо зміни у localStorage
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      if (items.length === 0) {
+        localStorage.removeItem(STORAGE_KEY);
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
     } catch (e) {
       console.error('Не вдалося зберегти кошик у localStorage:', e);
     }
