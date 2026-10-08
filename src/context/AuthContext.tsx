@@ -25,10 +25,10 @@ export interface MockOrder {
 interface AuthContextType {
   currentUser: UserProfile;
   isAuthenticated: boolean;
-  login: (role?: UserRole) => void;
+  login: (email?: string) => UserRole;
+  register: (data: { name: string; email: string; phone: string }) => UserRole;
   logout: () => void;
   updateProfile: (updated: Partial<UserProfile>) => void;
-  switchRole: (role: UserRole) => void;
   usersList: UserProfile[];
   toggleUserRole: (userId: number) => void;
   orders: MockOrder[];
@@ -127,7 +127,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (e) {
       console.error(e);
     }
-    return initialUsers[0]; // За замовчуванням адмін Михайло для зручності тесту
+    return initialUsers[0];
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
@@ -140,10 +140,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [currentUser]);
 
-  const login = (role: UserRole = 'user') => {
-    const user = usersList.find((u) => u.role === role) || usersList[0];
+  // При вході: роль береться з бази даних (usersList) по email
+  const login = (email?: string): UserRole => {
+    let user: UserProfile | undefined;
+    if (email) {
+      user = usersList.find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
+    }
+    if (!user) {
+      // Якщо введений новий email або не знайдено, створюємо/використовуємо зі стандартною роллю 'user'
+      if (email && email.trim().length > 0) {
+        user = {
+          id: Date.now(),
+          name: email.split('@')[0],
+          email: email.trim(),
+          phone: '+380990000000',
+          role: 'user',
+          city: 'Київ',
+          novaPoshta: 'Відділення №1',
+        };
+        setUsersList((prev) => [...prev, user!]);
+      } else {
+        user = usersList[0];
+      }
+    }
     setCurrentUser(user);
     setIsAuthenticated(true);
+    return user.role;
+  };
+
+  // При реєстрації: автоматично створюється простий користувач (role: 'user')
+  const register = (data: { name: string; email: string; phone: string }): UserRole => {
+    const newUser: UserProfile = {
+      id: Date.now(),
+      name: data.name.trim() || 'Новий Користувач',
+      email: data.email.trim(),
+      phone: data.phone.trim() || '+380990000000',
+      role: 'user',
+      city: 'Київ',
+      novaPoshta: 'Відділення №1',
+    };
+    setUsersList((prev) => [...prev, newUser]);
+    setCurrentUser(newUser);
+    setIsAuthenticated(true);
+    return 'user';
   };
 
   const logout = () => {
@@ -158,15 +197,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
       return next;
     });
-  };
-
-  const switchRole = (role: UserRole) => {
-    const matchingUser = usersList.find((u) => u.role === role);
-    if (matchingUser) {
-      setCurrentUser(matchingUser);
-    } else {
-      updateProfile({ role });
-    }
   };
 
   // Адмін змінює простого користувача на менеджера і навпаки
@@ -198,9 +228,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentUser,
         isAuthenticated,
         login,
+        register,
         logout,
         updateProfile,
-        switchRole,
         usersList,
         toggleUserRole,
         orders,

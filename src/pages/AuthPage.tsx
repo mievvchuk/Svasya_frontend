@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth, type UserRole } from '../context/AuthContext';
-import { ArrowLeft, User, ShieldCheck, Briefcase } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { ArrowLeft } from 'lucide-react';
 
 export const AuthPage: React.FC = () => {
-  const { login, updateProfile } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [name, setName] = useState('Михайло');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('mikhail@gmail.com');
-  const [phone, setPhone] = useState('+380991234567');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('********');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (mode === 'register') {
-      updateProfile({ name, email, phone, role: 'user' });
-      login('user');
+      // При реєстрації - автоматично створюється простий користувач
+      register({ name, email, phone });
       navigate('/profile');
     } else {
-      login('user');
-      navigate('/profile');
-    }
-  };
-
-  const handleQuickDemoLogin = (role: UserRole) => {
-    login(role);
-    if (role === 'admin') {
-      navigate('/admin');
-    } else if (role === 'manager') {
-      navigate('/manager');
-    } else {
-      navigate('/profile');
+      // При вході - роль користувача визначається в базі даних бекенду
+      const userRole = login(email);
+      if (userRole === 'admin') {
+        navigate('/admin');
+      } else if (userRole === 'manager') {
+        navigate('/manager');
+      } else {
+        navigate('/profile');
+      }
     }
   };
 
@@ -56,7 +52,10 @@ export const AuthPage: React.FC = () => {
         <div className="flex border-b border-[#343438] mb-8">
           <button
             type="button"
-            onClick={() => setMode('login')}
+            onClick={() => {
+              setMode('login');
+              if (!email) setEmail('mikhail@gmail.com');
+            }}
             className={`flex-1 py-3 text-xs font-bold tracking-widest uppercase transition-all ${
               mode === 'login'
                 ? 'text-[#FF00FF] border-b-2 border-[#FF00FF] bg-[#FF00FF]/5'
@@ -67,7 +66,10 @@ export const AuthPage: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => setMode('register')}
+            onClick={() => {
+              setMode('register');
+              setEmail('');
+            }}
             className={`flex-1 py-3 text-xs font-bold tracking-widest uppercase transition-all ${
               mode === 'register'
                 ? 'text-[#00FFFF] border-b-2 border-[#00FFFF] bg-[#00FFFF]/5'
@@ -79,16 +81,16 @@ export const AuthPage: React.FC = () => {
         </div>
 
         <div className="mb-6">
-          <div className="text-[10px] text-[#B7FFB0] tracking-widest uppercase mb-1">
+          <div className="text-[10px] text-[#B7FFB0] tracking-widest uppercase mb-1 font-mono">
             TERMINAL_AUTH // OPERATOR_CREDENTIALS
           </div>
           <h1 className="text-2xl font-black text-[#F5F5F0] uppercase font-sans">
             {mode === 'login' ? 'АВТОРИЗАЦІЯ В СИСТЕМІ' : 'СТВОРЕННЯ ПРОФІЛЮ'}
           </h1>
-          <p className="text-xs text-[#99999F] mt-1">
+          <p className="text-xs text-[#99999F] mt-1 font-mono">
             {mode === 'login'
-              ? 'Увійдіть для доступу до історії замовлень та особистого кабінету'
-              : 'Вкажіть контактні дані для оформлення замовлень та доставки'}
+              ? 'Введіть ваші облікові дані. Система автоматично визначить рівень доступу з бази даних.'
+              : 'При реєстрації автоматично створюється обліковий запис покупця.'}
           </p>
         </div>
 
@@ -96,7 +98,7 @@ export const AuthPage: React.FC = () => {
           {mode === 'register' && (
             <>
               <div>
-                <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider">
+                <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider font-mono">
                   CUSTOMER_NAME *
                 </label>
                 <input
@@ -104,13 +106,13 @@ export const AuthPage: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Михайло"
-                  className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none"
+                  placeholder="Михайло Шевченко"
+                  className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider">
+                <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider font-mono">
                   PHONE_NUMBER *
                 </label>
                 <input
@@ -118,15 +120,15 @@ export const AuthPage: React.FC = () => {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+380XXXXXXXXX"
-                  className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none"
+                  placeholder="+380991234567"
+                  className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none font-mono"
                 />
               </div>
             </>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider font-mono">
               EMAIL_ADDRESS *
             </label>
             <input
@@ -135,12 +137,12 @@ export const AuthPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@gmail.com"
-              className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none"
+              className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none font-mono"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[#F5F5F0] mb-2 tracking-wider font-mono">
               PASSWORD *
             </label>
             <input
@@ -149,7 +151,7 @@ export const AuthPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none"
+              className="w-full px-4 py-3 bg-[#080808] border border-[#343438] text-xs text-[#F5F5F0] focus:border-[#00FFFF] focus:outline-none font-mono"
             />
           </div>
 
@@ -160,42 +162,18 @@ export const AuthPage: React.FC = () => {
           </div>
         </form>
 
-        {/* Блок швидкого демо-входу для перевірки ролей */}
-        <div className="mt-8 pt-6 border-t border-[#343438] text-center">
-          <div className="text-[11px] text-[#99999F] uppercase tracking-wider mb-3">
-            ⚡ ШВИДКИЙ ДЕМО-ВХІД ПІД РОЛЛЯМИ (ДЛЯ ПЕРЕВІРКИ):
+        {mode === 'login' && (
+          <div className="mt-8 pt-4 border-t border-[#1C1C1F] text-[10px] text-[#99999F] font-mono leading-relaxed">
+            <span className="text-[#00FFFF]">// ДЕМО-ЗАПИСИ В БД:</span>
+            <div className="mt-1 space-y-0.5">
+              <div>Адмін: <code className="text-[#F5F5F0]">mikhail@gmail.com</code></div>
+              <div>Менеджер: <code className="text-[#F5F5F0]">alex.boyko@gmail.com</code></div>
+              <div>Користувач: <code className="text-[#F5F5F0]">ivan.melnyk@gmail.com</code></div>
+            </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('user')}
-              className="p-2.5 border border-[#343438] bg-[#080808] hover:border-[#00FFFF] hover:text-[#00FFFF] flex flex-col items-center gap-1 transition-colors"
-            >
-              <User className="w-3.5 h-3.5" />
-              <span>Користувач</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('manager')}
-              className="p-2.5 border border-[#343438] bg-[#080808] hover:border-[#B7FFB0] hover:text-[#B7FFB0] flex flex-col items-center gap-1 transition-colors"
-            >
-              <Briefcase className="w-3.5 h-3.5" />
-              <span>Менеджер</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('admin')}
-              className="p-2.5 border border-[#343438] bg-[#080808] hover:border-[#FF00FF] hover:text-[#FF00FF] flex flex-col items-center gap-1 transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Адмін</span>
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </main>
   );
 };
-
+export default AuthPage;
