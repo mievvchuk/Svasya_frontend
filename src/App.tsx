@@ -1,4 +1,21 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { OrderSuccessPage } from './pages/OrderSuccessPage';
+import { AuthPage } from './pages/AuthPage';
+import { UserProfilePage } from './pages/UserProfilePage';
+import { ManagerProfilePage } from './pages/ManagerProfilePage';
+import { AdminProfilePage } from './pages/AdminProfilePage';
+import { OrderDetailsPage } from './pages/OrderDetailsPage';
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { LanguageProvider } from './i18n/useLang';
@@ -19,6 +36,29 @@ export const App: React.FC = () => {
             <Header />
             <div className="flex-1">
               <Routes>
+                {/* Сторінки кошика та замовлення */}
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/order-success" element={<OrderSuccessPage />} />
+
+                {/* Сторінка авторизації */}
+                <Route path="/auth" element={<AuthPage />} />
+
+                {/* Окремі сторінки профілів згідно ролі */}
+                <Route path="/profile" element={<UserProfilePage />} />
+                <Route path="/profile/user" element={<UserProfilePage />} />
+                <Route path="/manager" element={<ManagerProfilePage />} />
+                <Route path="/profile/manager" element={<ManagerProfilePage />} />
+                <Route path="/admin" element={<AdminProfilePage />} />
+                <Route path="/profile/admin" element={<AdminProfilePage />} />
+
+                {/* Сторінка перегляду та обробки замовлення */}
+                <Route path="/orders/:id" element={<OrderDetailsPage />} />
+                <Route path="/manager/orders/:id" element={<OrderDetailsPage />} />
+
+                {/* Дефолтний редирект */}
+                <Route path="/" element={<Navigate to="/cart" replace />} />
+                <Route path="*" element={<Navigate to="/cart" replace />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<ProductDetailPage />} />
@@ -30,6 +70,11 @@ export const App: React.FC = () => {
           </div>
         </BrowserRouter>
       </CartProvider>
+    </AuthProvider>
+  );
+};
+
+export default App;
     </LanguageProvider>
   );
 };

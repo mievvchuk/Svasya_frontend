@@ -34,23 +34,3 @@ export interface OrderResponse {
   phone?: string;
   email?: string;
 }
-
-export interface ProductVariant {
-  id: number;
-  product_id: number;
-  color: string;
-  size: string;
-  price: number;
-  stock_quantity?: number;
-  imageUrl?: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  base_price: number;
-  imageUrl: string;
-  variants: ProductVariant[];
-}
-

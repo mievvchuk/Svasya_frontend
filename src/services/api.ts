@@ -2,6 +2,9 @@ import type { CreateOrderPayload, OrderResponse } from '../types/cart';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
+/**
+ * Створення замовлення: POST /api/orders
+ */
 export async function createOrder(
   payload: CreateOrderPayload,
   useSimulationIfOffline = true
@@ -27,6 +30,12 @@ export async function createOrder(
   } catch (error: any) {
     console.warn('API /api/orders request failed:', error.message);
 
+    // Якщо це локальний хакатон-тест і бекенд ще не запущений:
+    if (useSimulationIfOffline) {
+      console.log('--- [DEMO MODE: Без бекенду] ---');
+      console.log('📤 Тіло запиту, сформоване фронтендом (POST /api/orders):', payload);
+      await new Promise((resolve) => setTimeout(resolve, 600)); // Емуляція затримки мережі
+      
     if (useSimulationIfOffline) {
       console.log('--- [DEMO MODE: Без бекенду] ---');
       console.log('📤 Тіло запиту, сформоване фронтендом (POST /api/orders):', payload);
@@ -48,4 +57,6 @@ export async function createOrder(
 
     throw error;
   }
+}
+
 }

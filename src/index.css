@@ -79,6 +79,7 @@
   background-color: rgba(255, 0, 255, 0.05);
 }
 
+/* CRT monitor container with corners ⌜ ⌟ */
 .crt-frame {
   position: relative;
   background-color: #141416;
@@ -87,6 +88,30 @@
 }
 
 .crt-scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Marquee infinite scroll for ticker */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
   background:
     linear-gradient(
       rgba(18, 16, 16, 0) 50%,
