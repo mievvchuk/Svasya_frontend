@@ -38,9 +38,16 @@ export const Header: React.FC = () => {
             >
               [ Shop The Drop ]
             </Link>
-            <span className="text-[#99999F] hover:text-[#F5F5F0] cursor-pointer transition-colors">
-              The Lore
-            </span>
+           <Link
+  to="/lore"
+  className={`transition-colors uppercase ${
+    isActive('/lore')
+      ? 'text-[#00FFFF] font-bold'
+      : 'text-[#99999F] hover:text-[#FF00FF]'
+  }`}
+>
+  The Lore
+</Link>
             <span className="text-[#99999F] hover:text-[#F5F5F0] cursor-pointer transition-colors">
               Shipping / FAQ
             </span>
