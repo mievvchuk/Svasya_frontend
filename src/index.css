@@ -3,7 +3,14 @@
 @layer base {
   :root {
     --bg-main: #080808;
+    --bg-card: #141416;
+    --bg-monitor: #101214;
+    --border-dim: #343438;
     --text-primary: #F5F5F0;
+    --text-muted: #99999F;
+    --accent-magenta: #FF00FF;
+    --accent-cyan: #00FFFF;
+    --accent-lime: #B7FFB0;
   }
 
   body {
@@ -16,4 +23,164 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
   }
+}
+
+/* Figma Glitch / Streetwear Button Style */
+.btn-svasya {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #FF00FF;
+  color: #080808;
+  border: 1px solid #FF00FF;
+  padding: 14px 24px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.btn-svasya:hover:not(:disabled) {
+  background-color: #00FFFF;
+  border-color: #00FFFF;
+  color: #080808;
+  box-shadow: 4px 4px 0px #FF00FF;
+  transform: translate(-2px, -2px);
+}
+
+.btn-svasya:active:not(:disabled) {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+
+.btn-svasya-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 13px;
+  background-color: transparent;
+  color: #F5F5F0;
+  border: 1px solid #343438;
+  padding: 10px 18px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-svasya-outline:hover:not(:disabled) {
+  border-color: #FF00FF;
+  color: #FF00FF;
+  background-color: rgba(255, 0, 255, 0.05);
+}
+
+.crt-frame {
+  position: relative;
+  background-color: #141416;
+  border: 1px solid #343438;
+  box-shadow: 0px 0px 20px 0px rgba(183, 255, 176, 0.04);
+}
+
+.crt-scanlines {
+  background:
+    linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.35) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.04),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.04)
+    );
+  background-size: 100% 6px, 8px 100%;
+  pointer-events: none;
+  position: relative;
+}
+
+.crt-scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.glitch {
+  position: relative;
+  display: inline-block;
+  color: #F5F5F0;
+  text-shadow:
+    0 0 8px rgba(255, 0, 255, 0.35),
+    0 0 24px rgba(0, 255, 255, 0.15);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: #FF00FF;
+  transform: translate(-3px, 0);
+  mix-blend-mode: screen;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.glitch::after {
+  color: #00FFFF;
+  transform: translate(3px, 0);
+  mix-blend-mode: screen;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
 }

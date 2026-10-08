@@ -6,7 +6,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'СВАСЬ Hoodie Classic',
     description: 'Легендарне фірмове худі "СВАСЬ" із щільної тринитки з начісом. Оверсайз крій, глибокий капюшон та фірмова вишивка.',
     base_price: 999,
-    imageUrl: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+    imageUrl: './images/t-shirt.png',
     variants: [
       { id: 1, product_id: 1, color: 'forest_green', size: 'S', price: 999 },
       { id: 2, product_id: 1, color: 'forest_green', size: 'M', price: 999 },
@@ -21,7 +21,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'СВАСЬ Oversize T-Shirt',
     description: 'Базова футболка з преміальної 100% бавовни (220 г/м²). Стійкий шевронний принт СВАСЬ на грудях.',
     base_price: 599,
-    imageUrl: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+    imageUrl: './images/cap.jpg',
     variants: [
       { id: 11, product_id: 2, color: 'pure_white', size: 'M', price: 599 },
       { id: 12, product_id: 2, color: 'pure_white', size: 'L', price: 599 },
@@ -34,7 +34,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'СВАСЬ Cargo Pants',
     description: 'Зручні штани-карго з міцного ріп-стопу з великою кількістю кишень та регульованими манжетами.',
     base_price: 1299,
-    imageUrl: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
+    imageUrl: './images/hoodie.png',
     variants: [
       { id: 21, product_id: 3, color: 'olive', size: 'M', price: 1299 },
       { id: 22, product_id: 3, color: 'olive', size: 'L', price: 1299 },
@@ -46,7 +46,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'СВАСЬ Beanie Hat',
     description: 'Тепла вʼязана шапка з відворотом та мінімалістичним патчем СВАСЬ.',
     base_price: 349,
-    imageUrl: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=800&q=80',
+    imageUrl: './images/t-shirt.png',
     variants: [
       { id: 31, product_id: 4, color: 'graphite', size: 'ONE SIZE', price: 349 },
       { id: 32, product_id: 4, color: 'forest_green', size: 'ONE SIZE', price: 349 },
