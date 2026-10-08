@@ -7,9 +7,7 @@ import {
   Edit3,
   Check,
   LogOut,
-  ArrowRight,
-  ShieldCheck,
-  Briefcase
+  ArrowRight
 } from 'lucide-react';
 
 export const UserProfilePage: React.FC = () => {
@@ -67,33 +65,14 @@ export const UserProfilePage: React.FC = () => {
           </h1>
         </div>
 
-        {/* Швидкі посилання на інші кабінети */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] text-[#99999F] uppercase tracking-wider mr-1 hidden sm:inline">
-            ПЕРЕЙТИ В КАБІНЕТ:
-          </span>
-          <Link
-            to="/manager"
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#B7FFB0] hover:border-[#B7FFB0] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
-          >
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Менеджер</span>
-            <ArrowRight className="w-3 h-3" />
-          </Link>
-          <Link
-            to="/admin"
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF00FF] hover:border-[#FF00FF] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Адміністратор</span>
-            <ArrowRight className="w-3 h-3" />
-          </Link>
+        {/* Кнопка виходу */}
+        <div>
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF4444] hover:border-[#FF4444] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
+            className="px-4 py-2 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF4444] hover:border-[#FF4444] text-xs font-mono tracking-wider transition-colors inline-flex items-center gap-2"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span>Вийти</span>
+            <span>[ ВИЙТИ З АКАУНТА ]</span>
           </button>
         </div>
       </div>
@@ -292,12 +271,13 @@ export const UserProfilePage: React.FC = () => {
             {displayOrders.map((ord) => (
               <div
                 key={ord.id}
-                className="p-4 bg-[#080808] border border-[#343438] hover:border-[#00FFFF] transition-colors"
+                onClick={() => navigate(`/orders/${ord.id}`)}
+                className="p-4 bg-[#080808] border border-[#343438] hover:border-[#00FFFF] transition-colors cursor-pointer group"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-[#F5F5F0] font-mono">
-                      Замовлення #{ord.id}
+                    <span className="text-sm font-bold text-[#F5F5F0] group-hover:text-[#00FFFF] transition-colors font-mono">
+                      Замовлення #{ord.id} ↗
                     </span>
                     <span className="text-[10px] text-[#99999F] font-mono">
                       ({ord.date})
@@ -347,3 +327,4 @@ export const UserProfilePage: React.FC = () => {
   );
 };
 export default UserProfilePage;
+
