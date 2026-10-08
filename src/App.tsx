@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
+import { ProductsPage } from './pages/ProductsPage';
 
 export const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ export const App: React.FC = () => {
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
             </Routes>
           </div>
           <Footer />
