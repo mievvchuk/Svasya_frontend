@@ -11,6 +11,7 @@ import { AuthPage } from './pages/AuthPage';
 import { UserProfilePage } from './pages/UserProfilePage';
 import { ManagerProfilePage } from './pages/ManagerProfilePage';
 import { AdminProfilePage } from './pages/AdminProfilePage';
+import { OrderDetailsPage } from './pages/OrderDetailsPage';
 
 export const App: React.FC = () => {
   return (
@@ -36,6 +37,10 @@ export const App: React.FC = () => {
                 <Route path="/profile/manager" element={<ManagerProfilePage />} />
                 <Route path="/admin" element={<AdminProfilePage />} />
                 <Route path="/profile/admin" element={<AdminProfilePage />} />
+
+                {/* Сторінка перегляду та обробки замовлення */}
+                <Route path="/orders/:id" element={<OrderDetailsPage />} />
+                <Route path="/manager/orders/:id" element={<OrderDetailsPage />} />
 
                 {/* Дефолтний редирект */}
                 <Route path="/" element={<Navigate to="/cart" replace />} />

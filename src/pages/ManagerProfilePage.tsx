@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth, type MockOrder } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Briefcase,
-  User,
-  ShieldCheck,
   Check,
   LogOut,
-  ArrowRight,
-  ChevronDown
+  ChevronDown,
+  ArrowUpRight
 } from 'lucide-react';
 
 export const ManagerProfilePage: React.FC = () => {
@@ -33,6 +31,10 @@ export const ManagerProfilePage: React.FC = () => {
     navigate('/auth');
   };
 
+  const handleOrderClick = (orderId: number) => {
+    navigate(`/manager/orders/${orderId}`);
+  };
+
   return (
     <main className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-16">
       {/* Верхній навігаційний тулбар */}
@@ -49,33 +51,14 @@ export const ManagerProfilePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Швидкі посилання на інші кабінети */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] text-[#99999F] uppercase tracking-wider mr-1 hidden sm:inline font-mono">
-            ПЕРЕЙТИ В КАБІНЕТ:
-          </span>
-          <Link
-            to="/profile"
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#00FFFF] hover:border-[#00FFFF] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
-          >
-            <User className="w-3.5 h-3.5" />
-            <span>Користувач</span>
-            <ArrowRight className="w-3 h-3" />
-          </Link>
-          <Link
-            to="/admin"
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF00FF] hover:border-[#FF00FF] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Адміністратор</span>
-            <ArrowRight className="w-3 h-3" />
-          </Link>
+        {/* Кнопка виходу */}
+        <div>
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF4444] hover:border-[#FF4444] text-[11px] font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
+            className="px-4 py-2 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#FF4444] hover:border-[#FF4444] text-xs font-mono tracking-wider transition-colors inline-flex items-center gap-2"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span>Вийти</span>
+            <span>[ ВИЙТИ З СИСТЕМИ ]</span>
           </button>
         </div>
       </div>
@@ -105,19 +88,26 @@ export const ManagerProfilePage: React.FC = () => {
         </div>
 
         <p className="text-xs text-[#99999F] font-mono mb-6">
-          Керуйте чергою та змінюйте статуси замовлень клієнтів у реальному часі:
+          Керуйте чергою та змінюйте статуси замовлень клієнтів. Натисніть на будь-яке замовлення, щоб відкрити повну інформацію:
         </p>
 
-        {/* Список замовлень зі скріншота */}
+        {/* Список замовлень зі скріншота з можливістю кліку на замовлення */}
         <div className="space-y-4">
           {orders.map((ord) => (
             <div
               key={ord.id}
-              className="p-5 bg-[#080808] border border-[#343438] hover:border-[#B7FFB0]/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4"
+              onClick={() => handleOrderClick(ord.id)}
+              className="p-5 bg-[#080808] border border-[#343438] hover:border-[#B7FFB0] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group"
             >
               <div className="space-y-1">
-                <div className="text-sm font-bold text-[#F5F5F0] font-mono">
-                  Замовлення #{ord.id} <span className="text-[#99999F] font-normal">({ord.date})</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-[#F5F5F0] group-hover:text-[#B7FFB0] transition-colors font-mono">
+                    Замовлення #{ord.id}
+                  </span>
+                  <span className="text-[#99999F] font-normal text-xs font-mono">
+                    ({ord.date})
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#99999F] group-hover:text-[#B7FFB0] transition-colors" />
                 </div>
                 <div className="text-xs text-[#99999F] font-mono">
                   Клієнт: <span className="text-[#F5F5F0]">{ord.customerName}</span> • {ord.items}
@@ -128,7 +118,7 @@ export const ManagerProfilePage: React.FC = () => {
               </div>
 
               {/* Селектор статусу замовлення */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
                 <div className="relative">
                   <select
                     value={ord.status}
@@ -147,6 +137,15 @@ export const ManagerProfilePage: React.FC = () => {
                   </select>
                   <ChevronDown className="w-4 h-4 text-[#99999F] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleOrderClick(ord.id)}
+                  className="hidden sm:inline-flex px-3 py-2 border border-[#343438] bg-[#141416] text-[#99999F] hover:text-[#00FFFF] hover:border-[#00FFFF] text-xs font-mono tracking-wider transition-colors items-center gap-1"
+                >
+                  <span>Деталі</span>
+                  <ArrowUpRight className="w-3 h-3" />
+                </button>
               </div>
             </div>
           ))}
